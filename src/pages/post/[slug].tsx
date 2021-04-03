@@ -1,4 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link';
+import { FaRegEye } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Prismic from '@prismicio/client';
@@ -34,9 +36,13 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  preview: boolean;
 }
 
-export default function Post({ post }: PostProps): JSX.Element {
+export default function Post({
+  post,
+  preview = false,
+}: PostProps): JSX.Element {
   const { isFallback } = useRouter();
 
   if (isFallback) {
@@ -81,6 +87,15 @@ export default function Post({ post }: PostProps): JSX.Element {
         ))}
         <Comments />
       </main>
+
+      {preview && (
+        <aside className={commonStyles.previewButton}>
+          <FaRegEye />
+          <Link href="/api/exit-preview">
+            <a>Sair do modo Preview</a>
+          </Link>
+        </aside>
+      )}
     </>
   );
 }
@@ -101,9 +116,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: true };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
-  const response = await prismic.getByUID('post', String(params.slug), {});
+  const response = await prismic.getByUID('post', String(params.slug), {
+    ref: previewData?.ref ?? null,
+  });
 
   const post: Post = {
     uid: response.uid,
@@ -120,6 +141,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       post,
+      preview,
     },
   };
 };

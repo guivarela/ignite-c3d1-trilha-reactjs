@@ -2,6 +2,7 @@ import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import Prismic from '@prismicio/client';
 import { FiUser, FiCalendar } from 'react-icons/fi';
+import { FaRegEye } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -29,6 +30,7 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview: boolean;
 }
 
 function formatPosts(posts): Post[] {
@@ -45,7 +47,10 @@ function formatPosts(posts): Post[] {
   });
 }
 
-export default function Home({ postsPagination }: HomeProps): JSX.Element {
+export default function Home({
+  postsPagination,
+  preview = false,
+}: HomeProps): JSX.Element {
   const [pagination, setPagination] = useState(postsPagination);
 
   function handleLoadMorePosts(): void {
@@ -95,17 +100,30 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           </button>
         )}
       </div>
+
+      {preview && (
+        <aside className={commonStyles.previewButton}>
+          <FaRegEye />
+          <Link href="/api/exit-preview">
+            <a>Sair do modo Preview</a>
+          </Link>
+        </aside>
+      )}
     </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query(
     [Prismic.predicates.at('document.type', 'post')],
     {
       fetch: ['post.title', 'post.subtitle', 'post.content', 'post.author'],
       pageSize: 1,
+      ref: previewData?.ref ?? null,
     }
   );
 
@@ -119,6 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       postsPagination,
+      preview,
     },
   };
 };

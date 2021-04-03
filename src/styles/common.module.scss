@@ -21,3 +21,26 @@
     }
   }
 }
+
+.previewButton {
+  position: fixed;
+  top: 40px;
+  right: 50px;
+  background: var(--highlight);
+  padding: 11px 25px;
+  border-radius: 40px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.9)
+  }
+
+  svg {
+    margin-right: 20px;
+  }
+}
