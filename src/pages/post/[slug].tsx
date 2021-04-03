@@ -11,6 +11,7 @@ import { getPrismicClient } from '../../services/prismic';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import Header from '../../components/Header';
+import Comments from '../../components/Comments';
 
 interface Post {
   uid: string | null;
@@ -71,12 +72,14 @@ export default function Post({ post }: PostProps): JSX.Element {
           <div key={content.heading} className={styles.postContent}>
             <h2>{content.heading}</h2>
             <div
+              // eslint-disable-next-line react/no-danger
               dangerouslySetInnerHTML={{
                 __html: RichText.asHtml(content.body),
               }}
             />
           </div>
         ))}
+        <Comments />
       </main>
     </>
   );
