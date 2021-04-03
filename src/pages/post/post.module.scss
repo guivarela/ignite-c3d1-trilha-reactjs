@@ -1,1 +1,41 @@
-// TODO
+.postHero {
+  width: 100vw;
+  max-height: 450px;
+  object-fit: cover;
+}
+
+.container {
+  max-width: 700px;
+  margin: 3.125px auto;
+
+  h1 {
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 3.625rem;
+    margin-top: 3rem;
+  }
+}
+
+.postContent {
+
+  h2 {
+    font-size: 2.25rem;
+    line-height: 3.15rem;
+    margin: 2.25rem 0;
+  }
+
+  p, a, li {
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.95rem;
+    text-align: justify;
+  }
+
+  a {
+    color: var(--highlight);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

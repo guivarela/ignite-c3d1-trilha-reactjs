@@ -1,1 +1,23 @@
-// TODO
+.postInfo {
+  margin-top: 1.667rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gray-200);
+
+    & + span {
+      margin-left: 2rem;
+    }
+  }
+}
